@@ -1,5 +1,6 @@
 import type {AstroObject} from "./AstroObject.ts";
 import {useState} from "react";
+import * as fs from "fs";
 
 interface DiscoveryProps{
     objectList: AstroObject[];
@@ -13,13 +14,13 @@ export default function DiscoveryForm(props: DiscoveryProps){
     const [objectImgPath, setObjectImgPath] = useState("");
 
     function handleUpdateList(){
-        const newAstroObject = {
+        const newAstroObject: AstroObject = {
             name: objectName,
             type: objectType,
-            objectDistance: objectDistance,
-            objectImgPath: objectImgPath,
+            distance: objectDistance,
+            imgPath: objectImgPath,
         };
-        props.setObjectList([...newAstroObject]);
+        props.setObjectList([...props.objectList, newAstroObject]);
     }
 
     return (
@@ -31,7 +32,7 @@ export default function DiscoveryForm(props: DiscoveryProps){
                 Dystans: <input type="number" onChange={(e)=>setObjectDistance(parseInt(e.target.value))}/>
                 Link do obrazka: <input type="url" onChange={(e)=>setObjectImgPath(e.target.value)}/>
 
-                <button onClick={() => {handleUpdateList()}}></button>
+                <button onClick={() => {handleUpdateList()}} type={"button"}>Dodaj</button>
             </form>
         </div>
     )
