@@ -1,39 +1,78 @@
-import type {AstroObject} from "./AstroObject.ts";
-import {useState} from "react";
-import * as fs from "fs";
+import { useState } from "react";
+import type { AstroObject } from "./AstroObject";
 
-interface DiscoveryProps{
-    objectList: AstroObject[];
-    setObjectList: (objectList: AstroObject[]) => void;
+interface DiscoveryProps {
+    onAddObject: (newObject: AstroObject) => void;
 }
-export default function DiscoveryForm(props: DiscoveryProps){
 
+export default function DiscoveryForm(props: DiscoveryProps) {
     const [objectName, setObjectName] = useState("");
     const [objectType, setObjectType] = useState("");
-    const [objectDistance, setObjectDistance] = useState(0);
+    const [objectDistance, setObjectDistance] = useState("");
     const [objectImgPath, setObjectImgPath] = useState("");
 
-    function handleUpdateList(){
+    function handleSubmit(e) {
+        e.preventDefault();
+
         const newAstroObject: AstroObject = {
+            id: crypto.randomUUID(),
             name: objectName,
             type: objectType,
-            distance: objectDistance,
-            imgPath: objectImgPath,
+            distance: Number(objectDistance),
+            imgPath: objectImgPath
         };
-        props.setObjectList([...props.objectList, newAstroObject]);
+
+        props.onAddObject(newAstroObject);
+
+        setObjectName("");
+        setObjectType("");
+        setObjectDistance("");
+        setObjectImgPath("");
     }
 
     return (
         <div className="discovery-form">
-            <h1>Zgłoś anomalię/objekt</h1>
-            <form>
-                Nazwa: <input type="text" onChange={(e)=>setObjectName(e.target.value)}/>
-                Typ: <input type="text" onChange={(e)=>setObjectType(e.target.value)}/>
-                Dystans: <input type="number" onChange={(e)=>setObjectDistance(parseInt(e.target.value))}/>
-                Link do obrazka: <input type="url" onChange={(e)=>setObjectImgPath(e.target.value)}/>
+            <h2>Zgłoś nowy obiekt</h2>
 
-                <button onClick={() => {handleUpdateList()}} type={"button"}>Dodaj</button>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Nazwa:
+                    <input
+                        type="text"
+                        value={objectName}
+                        onChange={(e) => setObjectName(e.target.value)}
+                    />
+                </label>
+
+                <label>
+                    Typ:
+                    <input
+                        type="text"
+                        value={objectType}
+                        onChange={(e) => setObjectType(e.target.value)}
+                    />
+                </label>
+
+                <label>
+                    Dystans:
+                    <input
+                        type="number"
+                        value={objectDistance}
+                        onChange={(e) => setObjectDistance(e.target.value)}
+                    />
+                </label>
+
+                <label>
+                    Link do obrazka:
+                    <input
+                        type="url"
+                        value={objectImgPath}
+                        onChange={(e) => setObjectImgPath(e.target.value)}
+                    />
+                </label>
+
+                <button type="submit">Dodaj</button>
             </form>
         </div>
-    )
+    );
 }
