@@ -1,6 +1,7 @@
 export type AstroObject = {
-    name: string,
-    type:string,
-    distance:number,
-    imgPath:string
-}
+    id: string;
+    name: string;
+    type: string;
+    distance: number;
+    imgPath: string;
+};
