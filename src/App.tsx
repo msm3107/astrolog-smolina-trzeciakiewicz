@@ -3,6 +3,7 @@ import type { AstroObject } from "./AstroObject";
 import CatalogList from "./CatalogList";
 import ObjectDetails from "./ObjectDetails";
 import DiscoveryForm from "./DiscoveryForm";
+import "./App.css";
 
 export default function App() {
     const [objectList, setObjectList] = useState<AstroObject[]>([
